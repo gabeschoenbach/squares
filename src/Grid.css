@@ -1,0 +1,32 @@
+div {
+    text-align: center;
+}
+
+.square {
+    fill: white;
+    stroke: black;
+    stroke-width: 1;
+}
+
+.color {
+    stroke: black;
+    stroke-width: 1;
+}
+
+.hovered {
+    stroke-width: 3;
+    /* fill: yellow; */
+}
+
+.colorClicked {
+    stroke-width: 3;
+}
+
+.graphClicked {
+    fill: orange;
+}
+
+#dropdown {
+    background-color: #12a3b8;
+    border: 3;
+}

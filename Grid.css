@@ -1,0 +1,22 @@
+.square {
+    fill: white;
+    stroke: black;
+    stroke-width: 1;
+}
+
+.color {
+    stroke: black;
+    stroke-width: 1;
+}
+
+.hovered {
+    stroke-width: 2;
+}
+
+.colorClicked {
+    stroke-width: 2;
+}
+
+.graphClicked {
+    fill: orange;
+}
