@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import './Grid.css';
-import { csvParse } from 'd3';
 
 export default class Grid extends React.Component {
     constructor(props) {
@@ -13,8 +12,8 @@ export default class Grid extends React.Component {
             gridLength: 600,
             gridSize: 6,
             gridInfo: [],
+            padding: 10,
             colorBarInfo: [],
-            padding: 15,
             possibleGrids:[2,3,4,5,6,7,8,9,10],
             paintColor: "white",
         };
@@ -70,7 +69,7 @@ export default class Grid extends React.Component {
                 colorBarInfo: this.populateColorBarInfo(N, length, padding),
             })
             }>
-                {N}
+                {N}_
             </Dropdown.Item>
         })
     }
@@ -79,7 +78,7 @@ export default class Grid extends React.Component {
         var curr_x = event.x;
         var curr_y = event.y;
         var scalingGraphInverse = d3.scaleLinear()
-            .domain([10, 600-10])
+            .domain([0, 600])
             .range([0,6])
         var rounded_x = Math.round(scalingGraphInverse(curr_x));
         var rounded_y = Math.round(scalingGraphInverse(curr_y));
@@ -101,13 +100,8 @@ export default class Grid extends React.Component {
         var isClicked = d3.select(".colorClicked").size() === 1
         var color = isClicked ? d3.select(".colorClicked").style("fill") : "white"
         var isSameColor = d3.select(this).style("fill") === color
-        if (isSameColor) {
-            d3.select(this)
-                .style("fill", "white") // make this cohere with `paintColor` in state
-        } else {
-            d3.select(this)
-                .style("fill", color)
-        }                
+        d3.select(this)
+            .style("fill", isSameColor ? "white" : color)       
     }
 
     handleMouseOver() {
@@ -119,6 +113,7 @@ export default class Grid extends React.Component {
     }
 
     componentDidMount() {
+        document.title = "Exploring Grids"
         var N = this.state.gridSize;
         var length = this.state.gridLength;
         var padding = this.state.padding;
@@ -135,7 +130,14 @@ export default class Grid extends React.Component {
 
         d3.selectAll("svg").remove()
 
-        var graphContainer = d3.select(this.myRef.current)
+        var container = d3.select(this.myRef.current)
+            .append("svg")
+            .attr("width", this.state.gridLength)
+            .attr("height", this.state.gridLength)
+            // .style("border", "solid 1px")
+            .classed("container", true)
+
+        var graphContainer = container
             .append("svg")
             .attr("width", this.state.gridLength)
             .attr("height", this.state.gridLength)
@@ -157,10 +159,10 @@ export default class Grid extends React.Component {
             .on("click", this.handleGraphClicked)
             .call(drag)
 
-            var colorsContainer = d3.select(this.myRef.current)
+        var colorsContainer = d3.select(this.myRef.current)
             .append("svg")
             .attr("width", this.state.gridLength/2)
-            .attr("height", this.state.colorBarInfo[0].size+this.state.padding)
+            .attr("height", this.state.colorBarInfo[0].size + 2*this.state.padding)
         var colors = colorsContainer
             .selectAll("rect")
             .data(this.state.colorBarInfo)
@@ -180,7 +182,6 @@ export default class Grid extends React.Component {
         return
     }
 
-        
 
     render() {        
         return (
@@ -189,8 +190,9 @@ export default class Grid extends React.Component {
                     <DropdownButton id="dropdown" title="Grid Size">
                         {this.getDropdownButtons(
                             this.state.possibleGrids, 
-                            this.state.gridLength, 
-                            this.state.padding)
+                            this.state.gridLength,
+                            this.state.padding,
+                            )
                         }
                     </DropdownButton>
                 </div>

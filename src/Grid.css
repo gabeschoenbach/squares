@@ -14,19 +14,26 @@ div {
 }
 
 .hovered {
-    stroke-width: 3;
-    /* fill: yellow; */
+    filter: brightness(90%);
 }
 
 .colorClicked {
-    stroke-width: 3;
-}
-
-.graphClicked {
-    fill: orange;
+    filter: brightness(80%);
 }
 
 #dropdown {
     background-color: #12a3b8;
     border: 3;
+}
+
+.container {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+.subContainer {
+    /* display: flex; */
+    /* justify-content: center;
+    align-items: center; */
 }
